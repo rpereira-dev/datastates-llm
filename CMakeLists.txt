@@ -7,6 +7,8 @@ find_package(CUDAToolkit REQUIRED)
 # Locate liburing: E.g., `export LIBURING_PATH=$HOME/softwares/liburing`
 find_library(LIBURING_LIB uring PATHS $ENV{LIBURING_PATH}/lib REQUIRED)
 find_path(LIBURING_INCLUDE liburing.h PATHS $ENV{LIBURING_PATH}/include REQUIRED)
+message(INFO "LIBURING_LIB=${LIBURING_LIB}")
+message(INFO "LIBURING_INCLUDE=${LIBURING_INCLUDE}")
 
 if(BUILD_PYTHON_BINDINGS)
     find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
@@ -14,6 +16,7 @@ if(BUILD_PYTHON_BINDINGS)
 endif()
 
 include_directories(
+    ${LIBURING_INCLUDE}
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/src/
 )
