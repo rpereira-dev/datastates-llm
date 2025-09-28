@@ -26,6 +26,8 @@ print(purelib)
 echo "[INFO] Installing DataStates-LLM into: $INSTALL_PATH"
 
 # Step 1: Configure and build the C++ core
+export CC=clang
+export CXX=clang++
 cmake -B build -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH"
 cmake --build build -j$(nproc)
 cmake --install build

@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.15...3.27)
 project(datastates-llm LANGUAGES CXX CUDA)
-set(CMAKE_CXX_STANDARD 17)
 option(BUILD_PYTHON_BINDINGS "Build Python bindings using nanobind" ON)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(CUDAToolkit REQUIRED)
 # Locate liburing: E.g., `export LIBURING_PATH=$HOME/softwares/liburing`
@@ -33,8 +36,9 @@ file(GLOB_RECURSE CORE_SOURCES
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(datastates_core STATIC ${CORE_SOURCES})
 
+find_package(XKRT REQUIRED)
 target_include_directories(datastates_core PUBLIC ${PROJECT_SOURCE_DIR}/include ${LIBURING_INCLUDE})
-target_link_libraries(datastates_core PUBLIC CUDA::cudart ${LIBURING_LIB})
+target_link_libraries(datastates_core PUBLIC CUDA::cudart ${LIBURING_LIB} XKRT::xkrt)
 
 install(DIRECTORY include/
     DESTINATION datastates/include

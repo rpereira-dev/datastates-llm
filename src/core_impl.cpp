@@ -7,6 +7,11 @@ core_impl_t::core_impl_t(size_t host_cache_size, int gpu_id_, int rank_, bool us
     gpu_id(gpu_id_), rank(rank_), use_io_uring(use_io_uring_), fs_block_alignment(fs_block_alignment_) {
     try {
         DBG("DataStates initing: GPU: " << gpu_id << ", host cache (MB): " << (host_cache_size >> 20));
+
+        /* xkaapi init */
+        runtime.init();
+
+        /* old stuff */
         checkCuda(cudaSetDevice(gpu_id));
         is_active = true;
         int num_threads = 1;    // For initial prototype, set number of threads=1
@@ -102,6 +107,7 @@ std::string core_impl_t::shutdown() {
     try {
         if (is_active) {
             wait(true);
+            runtime.deinit();
             gpu_tier.reset();
             host_tier.reset();
             is_active = false;

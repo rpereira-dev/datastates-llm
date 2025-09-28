@@ -11,9 +11,18 @@
 #include "common/defs.hpp"
 #include "common/utils.hpp"
 
+#include <xkrt/runtime.h>
+
+XKRT_NAMESPACE_USE;
+
 namespace datastates {
 
 class core_impl_t : public core_t {
+
+    /* XKRT runtime */
+    runtime_t runtime;
+
+    /* previous stuff */
     std::shared_ptr<host_tier_t> host_tier;
     std::shared_ptr<gpu_tier_t> gpu_tier;
     std::shared_ptr<file_tier_t> file_tier;
